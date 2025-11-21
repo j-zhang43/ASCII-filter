@@ -69,7 +69,7 @@ def main():
     processed_textures = process_texture("texture.png")
 
     if len(sys.argv) == 2:
-        img = cv2.imread(sys.argv[2])
+        img = cv2.imread(sys.argv[1])
 
         if img is None:
             print("Cannot open image")
@@ -79,34 +79,36 @@ def main():
 
         cv2.imwrite("output.png",processed_img)
     else:
-        with mss.mss() as sct:
-            monitor = sct.monitors[1]
-            while True:
-                sc = np.array(sct.grab(monitor))
-                img = cv2.cvtColor(sc, cv2.COLOR_BGRA2BGR)
 
-                cv2.imshow("Frame", process_img(img,processed_textures))
+        # MULTI = 2
+        # with mss.mss() as sct:
+        #     monitor = sct.monitors[1]
+        #     while True:
+        #         sc = np.array(sct.grab(monitor))
+        #         img = cv2.cvtColor(sc, cv2.COLOR_BGRA2BGR)
+        #         img =  cv2.resize(img,None,fx=MULTI,fy=MULTI)
 
-                if cv2.waitKey(1) == ord('q'):
-                    break
+        #         cv2.imshow("Frame", process_img(img,processed_textures))
+
+        #         if cv2.waitKey(1) == ord('q'):
+        #             break
 
 
-        # cap = cv2.VideoCapture(1)
+        cap = cv2.VideoCapture(1)
 
-        # if not cap.isOpened():
-        #     print("Error: Could not open video stream.")
-        #     return
+        if not cap.isOpened():
+            print("Error: Could not open video stream.")
+            return
         
-        # while True:
-        #     ret,frame = cap.read()
+        while True:
+            ret,frame = cap.read()
 
-        #     if not ret:
-        #         print("cannot recieve video")
+            if not ret:
+                print("cannot recieve video")
 
-        #     cv2.imshow("Frame", process_img(frame,processed_textures))
+            cv2.imshow("Frame", process_img(frame,processed_textures))
 
-        #     if cv2.waitKey(1) == ord('q'):
-        #         break
+            if cv2.waitKey(1) == ord('q'):
+                break
 
 main()
-
